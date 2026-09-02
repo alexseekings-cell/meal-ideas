@@ -1,162 +1,117 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>Our Meal Ideas</title>
+    <title>Our Meal Ideas</title>
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        max-width: 800px;
-        margin: auto;
-        padding: 30px;
-        line-height: 1.6;
-    }
+    <style>
 
-    h1 {
-        text-align: center;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            line-height: 1.6;
+        }
 
-    h2 {
-        margin-top: 40px;
-    }
+        h1 {
+            text-align: center;
+        }
 
-    .category {
-        margin-bottom: 30px;
-    }
-</style>
-```
+        h2 {
+            margin-top: 40px;
+        }
+
+        .category {
+            margin-bottom: 30px;
+        }
+
+    </style>
 
 </head>
 
+
 <body>
 
-```
-<h1>🍴 Our Meal Ideas</h1>
+    <h1>🍴 Our Meal Ideas</h1>
+
+    <div id="meal-list">
+        Loading meal ideas...
+    </div>
 
 
-<div class="category">
-    <h2>🍚 Rice</h2>
+    <script>
 
-    <ul>
-        <li>Egg-fried</li>
-        <li>Bacon and rice</li>
-        <li>Rice bowls</li>
-        <li>Creamy rice</li>
-        <li>Chilli con carne</li>
-    </ul>
-</div>
+        fetch("meals.json")
 
+            .then(response => response.json())
 
-<div class="category">
-    <h2>🍚 Risotto / Couscous / Orzo</h2>
+            .then(meals => {
 
-    <ul>
-        <li>Parmesan / white wine</li>
-        <li>Sausage orzo tomato</li>
-    </ul>
-</div>
+                const mealList =
+                    document.getElementById("meal-list");
 
 
-<div class="category">
-    <h2>🍜 Noodles</h2>
+                for (const category in meals) {
 
-    <ul>
-        <li>Sticky chicken / beef</li>
-        <li>Ramen</li>
-        <li>Pho</li>
-        <li>Satay</li>
-    </ul>
-</div>
+                    const categoryDiv =
+                        document.createElement("div");
+
+                    categoryDiv.className =
+                        "category";
 
 
-<div class="category">
-    <h2>🍝 Pasta</h2>
+                    const heading =
+                        document.createElement("h2");
 
-    <ul>
-        <li>Creamy sausage / broccoli</li>
-        <li>Spaghetti Bolognese</li>
-        <li>Pesto pasta</li>
-        <li>Prawn linguine</li>
-        <li>Creamy beef tagliatelle</li>
-        <li>Lasagne</li>
-        <li>Harissa feta salmon chickpea bake</li>
-    </ul>
-</div>
+                    heading.textContent =
+                        category;
 
 
-<div class="category">
-    <h2>🍛 Curry</h2>
-
-    <ul>
-        <li>Dahl</li>
-        <li>Chickpea coconut</li>
-        <li>Thai green</li>
-    </ul>
-</div>
+                    const list =
+                        document.createElement("ul");
 
 
-<div class="category">
-    <h2>🥣 Stews / Soup</h2>
+                    meals[category].forEach(meal => {
 
-    <ul>
-        <li>Leek potato</li>
-        <li>Minestrone</li>
-        <li>Sausage / bean</li>
-        <li>Mushroom</li>
-        <li>Chicken noodle</li>
-        <li>Lentil stew</li>
-    </ul>
-</div>
+                        const listItem =
+                            document.createElement("li");
 
+                        listItem.textContent =
+                            meal;
 
-<div class="category">
-    <h2>🌯 Wraps / Burgers</h2>
+                        list.appendChild(listItem);
 
-    <ul>
-        <li>Veggie burgers</li>
-        <li>Sloppy joes</li>
-        <li>Enchiladas</li>
-        <li>Wraps - Mexican</li>
-        <li>Falafel</li>
-        <li>Tuna burgers</li>
-    </ul>
-</div>
+                    });
 
 
-<div class="category">
-    <h2>🥔 Potato</h2>
+                    categoryDiv.appendChild(heading);
 
-    <ul>
-        <li>Jacket potato</li>
-        <li>Shepherd's pie</li>
-        <li>Roast dinner</li>
-    </ul>
-</div>
+                    categoryDiv.appendChild(list);
 
+                    mealList.appendChild(categoryDiv);
 
-<div class="category">
-    <h2>🥐 Pastry</h2>
+                }
 
-    <ul>
-        <li>Salmon en croute</li>
-    </ul>
-</div>
+            })
 
+            .catch(error => {
 
-<div class="category">
-    <h2>🥗 Salads</h2>
+                document.getElementById("meal-list")
+                    .textContent =
+                    "Unable to load meal ideas.";
 
-    <ul>
-        <li>Chicken Caesar</li>
-        <li>Feta cucumber</li>
-    </ul>
-</div>
-```
+                console.error(error);
+
+            });
+
+    </script>
+
 
 </body>
+
 </html>
