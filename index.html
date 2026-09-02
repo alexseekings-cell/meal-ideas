@@ -10,24 +10,93 @@
 
     <style>
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 900px;
             margin: auto;
-            padding: 30px;
-            line-height: 1.6;
         }
 
         h1 {
             text-align: center;
+            margin-bottom: 25px;
         }
 
-        h2 {
-            margin-top: 40px;
+        #search {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
         }
 
         .category {
-            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .category-header {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: left;
+            border: none;
+            background: #f5f5f5;
+            cursor: pointer;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-header:hover {
+            background: #eeeeee;
+        }
+
+        .category-content {
+            display: none;
+            padding: 10px 20px 15px 20px;
+        }
+
+        .category.open .category-content {
+            display: block;
+        }
+
+        .category-content ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .category-content li {
+            padding: 7px 0;
+            font-size: 16px;
+        }
+
+        .arrow {
+            font-size: 18px;
+        }
+
+        .category.open .arrow {
+            transform: rotate(180deg);
+        }
+
+        .no-results {
+            text-align: center;
+            margin-top: 30px;
+            display: none;
         }
 
     </style>
@@ -37,14 +106,34 @@
 
 <body>
 
-    <h1>🍴 Our Meal Ideas</h1>
+    <div class="container">
 
-    <div id="meal-list">
-        Loading meal ideas...
+        <h1>🍴 Our Meal Ideas</h1>
+
+        <input
+            type="text"
+            id="search"
+            placeholder="Search for a meal..."
+        >
+
+        <div id="meal-list">
+            Loading meal ideas...
+        </div>
+
+        <div
+            id="no-results"
+            class="no-results"
+        >
+            No meals found.
+        </div>
+
     </div>
 
 
     <script>
+
+        let allMeals = {};
+
 
         fetch("meals.json")
 
@@ -52,50 +141,9 @@
 
             .then(meals => {
 
-                const mealList =
-                    document.getElementById("meal-list");
+                allMeals = meals;
 
-
-                for (const category in meals) {
-
-                    const categoryDiv =
-                        document.createElement("div");
-
-                    categoryDiv.className =
-                        "category";
-
-
-                    const heading =
-                        document.createElement("h2");
-
-                    heading.textContent =
-                        category;
-
-
-                    const list =
-                        document.createElement("ul");
-
-
-                    meals[category].forEach(meal => {
-
-                        const listItem =
-                            document.createElement("li");
-
-                        listItem.textContent =
-                            meal;
-
-                        list.appendChild(listItem);
-
-                    });
-
-
-                    categoryDiv.appendChild(heading);
-
-                    categoryDiv.appendChild(list);
-
-                    mealList.appendChild(categoryDiv);
-
-                }
+                displayMeals(meals);
 
             })
 
@@ -108,6 +156,160 @@
                 console.error(error);
 
             });
+
+
+        function displayMeals(meals) {
+
+            const mealList =
+                document.getElementById("meal-list");
+
+
+            mealList.innerHTML = "";
+
+
+            let categoriesShown = 0;
+
+
+            for (const category in meals) {
+
+                if (meals[category].length === 0) {
+                    continue;
+                }
+
+
+                categoriesShown++;
+
+
+                const categoryDiv =
+                    document.createElement("div");
+
+                categoryDiv.className =
+                    "category";
+
+
+                const header =
+                    document.createElement("button");
+
+                header.className =
+                    "category-header";
+
+                header.innerHTML =
+                    `<span>${category}</span>
+                     <span class="arrow">⌄</span>`;
+
+
+                const content =
+                    document.createElement("div");
+
+                content.className =
+                    "category-content";
+
+
+                const list =
+                    document.createElement("ul");
+
+
+                meals[category].forEach(meal => {
+
+                    const listItem =
+                        document.createElement("li");
+
+                    listItem.textContent =
+                        meal;
+
+                    list.appendChild(listItem);
+
+                });
+
+
+                content.appendChild(list);
+
+                categoryDiv.appendChild(header);
+
+                categoryDiv.appendChild(content);
+
+
+                header.addEventListener(
+                    "click",
+                    () => {
+
+                        categoryDiv.classList.toggle("open");
+
+                    }
+                );
+
+
+                mealList.appendChild(categoryDiv);
+
+            }
+
+
+            const noResults =
+                document.getElementById("no-results");
+
+
+            if (categoriesShown === 0) {
+
+                noResults.style.display =
+                    "block";
+
+            } else {
+
+                noResults.style.display =
+                    "none";
+
+            }
+
+        }
+
+
+        document
+            .getElementById("search")
+            .addEventListener(
+                "input",
+                event => {
+
+                    const searchTerm =
+                        event.target.value
+                            .toLowerCase()
+                            .trim();
+
+
+                    const filteredMeals = {};
+
+
+                    for (const category in allMeals) {
+
+                        const matchingMeals =
+                            allMeals[category]
+                                .filter(
+                                    meal =>
+                                        meal
+                                            .toLowerCase()
+                                            .includes(
+                                                searchTerm
+                                            )
+                                );
+
+
+                        if (
+                            matchingMeals.length > 0
+                        ) {
+
+                            filteredMeals[category] =
+                                matchingMeals;
+
+                        }
+
+                    }
+
+
+                    displayMeals(
+                        filteredMeals
+                    );
+
+                }
+            );
 
     </script>
 
