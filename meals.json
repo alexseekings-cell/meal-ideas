@@ -1,0 +1,70 @@
+{
+  "Rice": [
+    "Egg-fried",
+    "Bacon and rice",
+    "Rice bowls",
+    "Creamy rice",
+    "Chilli con carne"
+  ],
+
+  "Risotto / Couscous / Orzo": [
+    "Parmesan / white wine",
+    "Sausage orzo tomato"
+  ],
+
+  "Noodles": [
+    "Sticky chicken / beef",
+    "Ramen",
+    "Pho",
+    "Satay"
+  ],
+
+  "Pasta": [
+    "Creamy sausage / broccoli",
+    "Spaghetti Bolognese",
+    "Pesto pasta",
+    "Prawn linguine",
+    "Creamy beef tagliatelle",
+    "Lasagne",
+    "Harissa feta salmon chickpea bake"
+  ],
+
+  "Curry": [
+    "Dahl",
+    "Chickpea coconut",
+    "Thai green"
+  ],
+
+  "Stews / Soup": [
+    "Leek potato",
+    "Minestrone",
+    "Sausage / bean",
+    "Mushroom",
+    "Chicken noodle",
+    "Lentil stew"
+  ],
+
+  "Wraps / Burgers": [
+    "Veggie burgers",
+    "Sloppy joes",
+    "Enchiladas",
+    "Wraps - Mexican",
+    "Falafel",
+    "Tuna burgers"
+  ],
+
+  "Potato": [
+    "Jacket potato",
+    "Shepherd's pie",
+    "Roast dinner"
+  ],
+
+  "Pastry": [
+    "Salmon en croute"
+  ],
+
+  "Salads": [
+    "Chicken Caesar",
+    "Feta cucumber"
+  ]
+}
